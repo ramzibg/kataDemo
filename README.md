@@ -1,1 +1,2 @@
 # kataDemo
+Projet Maven .
