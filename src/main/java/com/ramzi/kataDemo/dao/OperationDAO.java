@@ -34,7 +34,7 @@ public class OperationDAO {
 	}
 	@Transactional
 	public Account getAccount( Client client) {
-		return null;
+		return new Account();
 	}
 	
 
