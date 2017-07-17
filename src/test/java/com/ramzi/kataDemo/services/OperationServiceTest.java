@@ -17,6 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.ramzi.kataDemo.dao.OperationDAO;
 import com.ramzi.kataDemo.enums.OperationType;
+import com.ramzi.kataDemo.exception.KataDemoException;
 import com.ramzi.kataDemo.model.Account;
 import com.ramzi.kataDemo.model.Client;
 import com.ramzi.kataDemo.model.Operation;
@@ -45,7 +46,7 @@ public class OperationServiceTest {
 	private List<Operation> operations = new ArrayList<Operation>();
 
 	@Test
-	public void depositInAccountTest() throws Exception {
+	public void depositInAccountTest() throws KataDemoException {
 		acc.setBalance(1000L);
 		ope.setAmount(1000L);
 		ope.setAccount(acc);
@@ -62,15 +63,15 @@ public class OperationServiceTest {
 	}
 
 	@Test
-	public void depositNegativeInAccountTest() throws Exception {
+	public void depositNegativeInAccountTest() throws KataDemoException {
 		acc.setBalance(1000L);
 		ope.setAmount(-1000L);
 		ope.setOperationType(OperationType.DEPOSIT);
-		Assertions.assertThatThrownBy(() -> operationService.deposit(ope, acc)).isInstanceOf(Exception.class);
+		Assertions.assertThatThrownBy(() -> operationService.deposit(ope, acc)).isInstanceOf(KataDemoException.class);
 	}
 
 	@Test
-	public void withDrowlFromAccountTest() throws Exception {
+	public void withDrowlFromAccountTest() throws KataDemoException {
 		acc.setBalance(1000L);
 		ope.setAmount(500L);
 		ope.setOperationType(OperationType.WITHDRAWL);
@@ -88,7 +89,7 @@ public class OperationServiceTest {
 	}
 
 	@Test
-	public void withDrowlAllFromAccountTest() throws Exception {
+	public void withDrowlAllFromAccountTest() throws KataDemoException {
 		acc.setBalance(1000L);
 		ope.setOperationType(OperationType.WITHDRAWL);
 		Account accountNew = operationService.withDrowlAll(ope, acc);
@@ -96,32 +97,32 @@ public class OperationServiceTest {
 	}
 
 	@Test
-	public void withDrowlAllEmptyFromAccountTest() throws Exception {
+	public void withDrowlAllEmptyFromAccountTest() throws KataDemoException {
 		acc.setBalance(0L);
 		ope.setOperationType(OperationType.WITHDRAWL);
-		Assertions.assertThatThrownBy(() -> operationService.withDrowlAll(ope, acc)).isInstanceOf(Exception.class)
+		Assertions.assertThatThrownBy(() -> operationService.withDrowlAll(ope, acc)).isInstanceOf(KataDemoException.class)
 				.hasMessage("Balance is empty");
 	}
 
 	@Test
-	public void withDrowlNegFromAccountTest() throws Exception {
+	public void withDrowlNegFromAccountTest() throws KataDemoException {
 		acc.setBalance(1000L);
 		ope.setAmount(-1000L);
-		Assertions.assertThatThrownBy(() -> operationService.withDrowl(ope, acc)).isInstanceOf(Exception.class)
+		Assertions.assertThatThrownBy(() -> operationService.withDrowl(ope, acc)).isInstanceOf(KataDemoException.class)
 				.hasMessage("Amount Negative");
 	}
 
 	@Test
-	public void withDrowlSupBalanceFromAccountTest() throws Exception {
+	public void withDrowlSupBalanceFromAccountTest() throws KataDemoException {
 		acc.setBalance(1000L);
 		ope.setAmount(1500L);
 		ope.setOperationType(OperationType.WITHDRAWL);
-		Assertions.assertThatThrownBy(() -> operationService.withDrowl(ope, acc)).isInstanceOf(Exception.class)
+		Assertions.assertThatThrownBy(() -> operationService.withDrowl(ope, acc)).isInstanceOf(KataDemoException.class)
 				.hasMessage("Amount bigger than Balance");
 	}
 
 	@Test
-	public void getMyHistoryTest() throws Exception {
+	public void getMyHistoryTest() throws KataDemoException {
 
 		Calendar cal = Calendar.getInstance();
 		Date end = new Date();

@@ -1,6 +1,5 @@
 package com.ramzi.kataDemo.services;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ramzi.kataDemo.dao.OperationDAO;
+import com.ramzi.kataDemo.exception.KataDemoException;
 import com.ramzi.kataDemo.model.Account;
 import com.ramzi.kataDemo.model.Client;
 import com.ramzi.kataDemo.model.Operation;
@@ -32,9 +32,9 @@ public class OperationService {
 	 * @throws Exception
 	 */
 	@Transactional
-	public Account deposit(Operation ope, Account acc) throws Exception {
+	public Account deposit(Operation ope, Account acc) throws KataDemoException {
 		if(ope!=null && ope.getAmount()<0)
-			throw new Exception();
+			throw new KataDemoException();
 		acc.setBalance(acc.getBalance() + ope.getAmount());
 		operationDAO.saveOperation(ope);
 		Account saveAccount = operationDAO.saveAccount(acc);
@@ -50,14 +50,14 @@ public class OperationService {
 	 * @throws Exception
 	 */
 	@Transactional
-	public Account withDrowl(Operation ope, Account acc) throws Exception {
+	public Account withDrowl(Operation ope, Account acc) throws KataDemoException {
 		if(ope!=null && ope.getAmount()<0){
 			
-			IOException ioException = new IOException("Amount Negative");
-			throw ioException;
+			KataDemoException exception = new KataDemoException("Amount Negative");
+			throw exception;
 		}if(ope!=null && ope.getAmount() > acc.getBalance()){
 			
-			Exception exception = new Exception("Amount bigger than Balance");
+			KataDemoException exception = new KataDemoException("Amount bigger than Balance");
 			throw exception;
 		}
 		acc.setBalance(acc.getBalance() - ope.getAmount());
@@ -75,9 +75,9 @@ public class OperationService {
 	 * @throws Exception
 	 */
 	@Transactional
-	public Account withDrowlAll(Operation ope,Account acc) throws Exception {
+	public Account withDrowlAll(Operation ope,Account acc) throws KataDemoException {
 		if(acc.getBalance() <= 0){
-			Exception exception = new Exception("Balance is empty");
+			KataDemoException exception = new KataDemoException("Balance is empty");
 			throw exception;
 		}
 			acc.setBalance(0L);
