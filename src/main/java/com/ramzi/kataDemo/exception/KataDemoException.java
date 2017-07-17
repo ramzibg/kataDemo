@@ -1,8 +1,8 @@
 package com.ramzi.kataDemo.exception;
 
 /**
- * class exception for kata
  * @author ramzi
+ * class exception for kata
  *
  */
 public class KataDemoException extends Exception {
